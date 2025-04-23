@@ -184,3 +184,24 @@ bd903131a05e: Layer already exists
 ea680fbff095: Layer already exists 
 v2: digest: sha256:85ac052e8850eabca1d0183a395758cde8e564aab7b2fb92ec3444110734d12a size: 1985
 [ec2-user@ip-172-31-1-66 my-first-folder]$ 
+
+**Create container from update images and test output**
+[ec2-user@ip-172-31-1-66 my-first-folder]$ 
+[ec2-user@ip-172-31-1-66 my-first-folder]$ docker run -d --name myapp -p 8081:80 devpipeline/nginx:v2
+8cc3e464c6bdca3d605f1dd8f5a5360e45b7859bfe82d86f2fac8a22dd617433
+[ec2-user@ip-172-31-1-66 my-first-folder]$ 
+[ec2-user@ip-172-31-1-66 my-first-folder]$ docker ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED             STATUS             PORTS                                   NAMES
+8cc3e464c6bd   devpipeline/nginx:v2   "/docker-entrypoint.…"   16 seconds ago      Up 15 seconds      0.0.0.0:8081->80/tcp, :::8081->80/tcp   myapp
+04d9ea9eb510   nginx                  "/docker-entrypoint.…"   About an hour ago   Up About an hour   0.0.0.0:8080->80/tcp, :::8080->80/tcp   apps
+[ec2-user@ip-172-31-1-66 my-first-folder]$ 
+[ec2-user@ip-172-31-1-66 my-first-folder]$ docker images
+REPOSITORY          TAG       IMAGE ID       CREATED          SIZE
+devpipeline/nginx   v2        cac21fda357c   26 minutes ago   192MB
+devpipeline/nginx   v1        d89ddd4e533b   49 minutes ago   192MB
+nginx               latest    4e1b6bae1e48   7 days ago       192MB
+[ec2-user@ip-172-31-1-66 my-first-folder]$
+
+[ec2-user@ip-172-31-1-66 my-first-folder]$ curl localhost:8081
+<html><body><h1>This is container created by Dockerfile!</h1></body></html>
+[ec2-user@ip-172-31-1-66 my-first-folder]$
