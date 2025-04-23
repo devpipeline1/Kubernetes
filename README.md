@@ -1,7 +1,4 @@
-# Web
-
-
-
+#Web
 #pull Docker Images
 
 [ec2-user@ip-172-31-1-66 ~]$ docker pull httpd
@@ -147,3 +144,5 @@ fe0988bb067f: Layer already exists
 ea680fbff095: Layer already exists 
 V2: digest: sha256:458e4ec6dc67a847962102f454f199107a584853c7df2b6d62b07332f3595b2a size: 1779
 [ec2-user@ip-172-31-1-66 my-first-folder]$
+
+======================================================================
