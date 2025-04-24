@@ -1,1 +1,128 @@
 #Install Helm
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+
+[ec2-user@ip-172-31-1-66 myproject]$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+[ec2-user@ip-172-31-1-66 myproject]$ ls
+get_helm.sh  kube8
+[ec2-user@ip-172-31-1-66 myproject]$ chmod 700 get_helm.sh
+[ec2-user@ip-172-31-1-66 myproject]$ ./get_helm.sh 
+[WARNING] Could not find git. It is required for plugin installation.
+Downloading https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+[ec2-user@ip-172-31-1-66 myproject]$ 
+[ec2-user@ip-172-31-1-66 myproject]$ helm --version
+Error: unknown flag: --version
+[ec2-user@ip-172-31-1-66 myproject]$ helm version
+version.BuildInfo{Version:"v3.17.3", GitCommit:"e4da49785aa6e6ee2b86efd5dd9e43400318262b", GitTreeState:"clean", GoVersion:"go1.23.7"}
+[ec2-user@ip-172-31-1-66 myproject]$ 
+[ec2-user@ip-172-31-1-66 myproject]$
+
+[ec2-user@ip-172-31-1-66 myproject]$ mkdir -p helm
+[ec2-user@ip-172-31-1-66 myproject]$ cd helm/
+[ec2-user@ip-172-31-1-66 helm]$ helm create myhelm
+Creating myhelm
+[ec2-user@ip-172-31-1-66 helm]$ ls
+myhelm
+[ec2-user@ip-172-31-1-66 helm]$ cd myhelm/
+[ec2-user@ip-172-31-1-66 myhelm]$ ls
+Chart.yaml  charts  templates  values.yaml
+[ec2-user@ip-172-31-1-66 myhelm]$ cd templates/
+[ec2-user@ip-172-31-1-66 templates]$ ls
+NOTES.txt  _helpers.tpl  deployment.yaml  hpa.yaml  ingress.yaml  service.yaml  serviceaccount.yaml  tests
+[ec2-user@ip-172-31-1-66 templates]$ rm -rf *
+[ec2-user@ip-172-31-1-66 templates]$ cp -p /myproject/kube8/* /myproject/helm/myhelm/templates/
+[ec2-user@ip-172-31-1-66 templates]$ 
+[ec2-user@ip-172-31-1-66 templates]$ cd /myproject/helm/myhelm/templates/
+[ec2-user@ip-172-31-1-66 templates]$ ls
+deploy.yaml  ingress.yaml  service.yaml
+[ec2-user@ip-172-31-1-66 templates]$ cd ..
+[ec2-user@ip-172-31-1-66 myhelm]$ ls
+Chart.yaml  charts  templates  values.yaml
+
+[ec2-user@ip-172-31-1-66 myhelm]$ cat values.yaml 
+# Default values for go-web-app-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: devpipeline/nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v1"
+
+[ec2-user@ip-172-31-1-66 templates]$ vi deploy.yaml 
+[ec2-user@ip-172-31-1-66 templates]$ cat deploy.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: nginx-dep
+   labels:
+      app: dev
+      env: mydev
+spec:
+   replicas: 5
+   selector:
+      matchLabels:
+         env: mydev
+   template:
+      metadata:
+         labels:
+            env: mydev
+      spec:
+         containers:
+         - name: nginx
+           image: devpipeline/nginx:{{ .values.image.tag }}
+[ec2-user@ip-172-31-1-66 templates]$
+
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ pwd
+/myproject/helm
+[ec2-user@ip-172-31-1-66 helm]$ ls
+myhelm
+[ec2-user@ip-172-31-1-66 helm]$ helm install myweb1 ./myhelm
+NAME: myweb1
+LAST DEPLOYED: Thu Apr 24 13:50:22 2025
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ kubectl get all
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/nginx-dep-6869d5c9f6-c5bz4   1/1     Running   0          6s
+pod/nginx-dep-6869d5c9f6-q7bpt   1/1     Running   0          6s
+pod/nginx-dep-6869d5c9f6-vw2hp   1/1     Running   0          6s
+pod/nginx-dep-6869d5c9f6-xlq8m   1/1     Running   0          6s
+pod/nginx-dep-6869d5c9f6-xqcpx   1/1     Running   0          6s
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes   ClusterIP   10.100.0.1       <none>        443/TCP        9h
+service/nginx-dep    NodePort    10.100.133.115   <none>        80:31548/TCP   6s
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx-dep   5/5     5            5           6s
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-dep-6869d5c9f6   5         5         5       6s
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ kubectl get nodes -o wide
+NAME                                            STATUS   ROLES    AGE   VERSION               INTERNAL-IP      EXTERNAL-IP      OS-IMAGE         KERNEL-VERSION                  CONTAINER-RUNTIME
+ip-192-168-45-198.ap-south-1.compute.internal   Ready    <none>   9h    v1.32.1-eks-5d632ec   192.168.45.198   13.233.216.223   Amazon Linux 2   5.10.235-227.919.amzn2.x86_64   containerd://1.7.27
+ip-192-168-72-173.ap-south-1.compute.internal   Ready    <none>   9h    v1.32.1-eks-5d632ec   192.168.72.173   3.110.67.104     Amazon Linux 2   5.10.235-227.919.amzn2.x86_64   containerd://1.7.27
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$ curl 13.233.216.223:31548
+<html><body><h1>This is container created by Dockerfile!</h1></body></html>
+[ec2-user@ip-172-31-1-66 helm]$ 
+[ec2-user@ip-172-31-1-66 helm]$
