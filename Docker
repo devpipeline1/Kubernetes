@@ -1,5 +1,10 @@
 # Web
 
+**Install Docker**
+sudo yum install -y docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl status docker
 
 **Pull Docker images from Docker hub**
 
