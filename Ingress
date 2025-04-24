@@ -1,0 +1,177 @@
+#Install Ingress controller 
+
+Refer "https://kubernetes.github.io/ingress-nginx/deploy/#aws" to download deployment file to create ingress controller
+
+run below command on kubernetes cluster
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/aws/deploy.yaml
+
+[ec2-user@ip-172-31-1-66 helm]$ cd /myproject/kube8/
+[ec2-user@ip-172-31-1-66 kube8]$ ls
+deploy.yaml  ingress.yaml  service.yaml
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/aws/deploy.yaml
+namespace/ingress-nginx created
+serviceaccount/ingress-nginx created
+serviceaccount/ingress-nginx-admission created
+role.rbac.authorization.k8s.io/ingress-nginx created
+role.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx-admission created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+configmap/ingress-nginx-controller created
+service/ingress-nginx-controller created
+service/ingress-nginx-controller-admission created
+deployment.apps/ingress-nginx-controller created
+job.batch/ingress-nginx-admission-create created
+job.batch/ingress-nginx-admission-patch created
+ingressclass.networking.k8s.io/nginx created
+validatingwebhookconfiguration.admissionregistration.k8s.io/ingress-nginx-admission created
+[ec2-user@ip-172-31-1-66 kube8]$
+
+
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   10h
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ vi ingress.yaml 
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   10h
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl apply -f deploy.yaml 
+deployment.apps/nginx-dep created
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-dep   5/5     5            5           11s
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+nginx-dep-6869d5c9f6-247bm   1/1     Running   0          16s
+nginx-dep-6869d5c9f6-bcxmp   1/1     Running   0          16s
+nginx-dep-6869d5c9f6-qddg9   1/1     Running   0          16s
+nginx-dep-6869d5c9f6-r7lfv   1/1     Running   0          16s
+nginx-dep-6869d5c9f6-w5n4r   1/1     Running   0          16s
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ cat service.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-dep
+spec:
+  selector:
+    env: mydev
+  ports:
+    - port: 80
+      targetPort: 80
+  type: NodePort
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl apply -f service.yaml 
+service/nginx-dep created
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.100.0.1       <none>        443/TCP        10h
+nginx-dep    NodePort    10.100.113.178   <none>        80:30161/TCP   7s
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ cat ingress.yaml 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-dep
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "myfirst-web.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-dep
+            port:
+              number: 80
+[ec2-user@ip-172-31-1-66 kube8]$ vi ingress.yaml 
+[ec2-user@ip-172-31-1-66 kube8]$ cat ingress.yaml 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-dep
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "myfirst-web1122.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-dep
+            port:
+              number: 80
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get ing
+NAME        CLASS   HOSTS         ADDRESS                                                                          PORTS   AGE
+nginx-dep   nginx   example.com   a4c2c6aa9641047d28614c8c09610ded-4e76033b18516dd3.elb.ap-south-1.amazonaws.com   80      28m
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl delete ingress nginx-dep
+ingress.networking.k8s.io "nginx-dep" deleted
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get ing
+No resources found in default namespace.
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ cat ingress.yaml 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-dep
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "myfirst-web1122.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-dep
+            port:
+              number: 80
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl apply -f ingress.yaml 
+ingress.networking.k8s.io/nginx-dep created
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ kubectl get ing
+NAME        CLASS   HOSTS                 ADDRESS                                                                          PORTS   AGE
+nginx-dep   nginx   myfirst-web1122.com   a4c2c6aa9641047d28614c8c09610ded-4e76033b18516dd3.elb.ap-south-1.amazonaws.com   80      8s
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ nslookup a4c2c6aa9641047d28614c8c09610ded-4e76033b18516dd3.elb.ap-south-1.amazonaws.com
+Server:         172.31.0.2
+Address:        172.31.0.2#53
+
+Non-authoritative answer:
+Name:   a4c2c6aa9641047d28614c8c09610ded-4e76033b18516dd3.elb.ap-south-1.amazonaws.com
+Address: 3.109.22.39
+Name:   a4c2c6aa9641047d28614c8c09610ded-4e76033b18516dd3.elb.ap-south-1.amazonaws.com
+Address: 13.232.161.164
+Name:   a4c2c6aa9641047d28614c8c09610ded-4e76033b18516dd3.elb.ap-south-1.amazonaws.com
+Address: 65.1.18.189
+
+[ec2-user@ip-172-31-1-66 kube8]$ sudo vi /etc/hosts
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+3.109.22.39  myfirst-web1122.com
+65.1.18.189  myfirst-web1122.com
+13.232.161.164  myfirst-web1122.com
+[ec2-user@ip-172-31-1-66 kube8]$ 
+[ec2-user@ip-172-31-1-66 kube8]$ curl myfirst-web1122.com
+<html><body><h1>This is container created by Dockerfile!</h1></body></html>
+[ec2-user@ip-172-31-1-66 kube8]$
