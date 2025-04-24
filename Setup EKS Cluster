@@ -40,6 +40,39 @@ sudo ./aws/install
 eksctl create cluster --name my-cluster1 --region ap-south-1
 ```
 
+
+[ec2-user@ip-172-31-1-66 ~]$ eksctl create cluster --name my-cluster2 --region ap-south-1
+2025-04-24 04:27:33 [ℹ]  eksctl version 0.207.0
+2025-04-24 04:27:33 [ℹ]  using region ap-south-1
+2025-04-24 04:27:33 [ℹ]  setting availability zones to [ap-south-1b ap-south-1a ap-south-1c]
+2025-04-24 04:27:33 [ℹ]  subnets for ap-south-1b - public:192.168.0.0/19 private:192.168.96.0/19
+2025-04-24 04:27:33 [ℹ]  subnets for ap-south-1a - public:192.168.32.0/19 private:192.168.128.0/19
+2025-04-24 04:27:33 [ℹ]  subnets for ap-south-1c - public:192.168.64.0/19 private:192.168.160.0/19
+2025-04-24 04:27:33 [ℹ]  nodegroup "ng-24d29ead" will use "" [AmazonLinux2/1.32]
+2025-04-24 04:27:33 [ℹ]  using Kubernetes version 1.32
+2025-04-24 04:27:33 [ℹ]  creating EKS cluster "my-cluster2" in "ap-south-1" region with managed nodes
+2025-04-24 04:27:33 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial managed nodegroup
+2025-04-24 04:27:33 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=ap-south-1 --cluster=my-cluster2'
+2025-04-24 04:27:33 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "my-cluster2" in "ap-south-1"
+2025-04-24 04:27:33 [ℹ]  CloudWatch logging will not be enabled for cluster "my-cluster2" in "ap-south-1"
+2025-04-24 04:27:33 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=ap-south-1 --cluster=my-cluster2'
+2025-04-24 04:27:33 [ℹ]  default addons metrics-server, vpc-cni, kube-proxy, coredns were not specified, will install them as EKS addons
+2025-04-24 04:27:33 [ℹ]  
+2 sequential tasks: { create cluster control plane "my-cluster2", 
+    2 sequential sub-tasks: { 
+        2 sequential sub-tasks: { 
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create managed nodegroup "ng-24d29ead",
+    } 
+}
+2025-04-24 04:27:33 [ℹ]  building cluster stack "eksctl-my-cluster2-cluster"
+2025-04-24 04:27:33 [ℹ]  deploying stack "eksctl-my-cluster2-cluster"
+2025-04-24 04:28:03 [ℹ]  waiting for CloudFormation stack "eksctl-my-cluster2-cluster"
+2025-04-24 04:28:33 [ℹ]  waiting for CloudFormation stack "eksctl-my-cluster2-cluster"
+###################################################################################################################################
+###################################################################################################################################
 ## Delete the cluster
 
 ```
