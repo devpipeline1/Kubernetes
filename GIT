@@ -82,3 +82,10 @@ Installed:
 
 Complete!
 [ec2-user@ip-172-31-1-66 myproject]$
+
+
+vi temp.yaml
+git status
+git add .
+git commit -m "added"
+git remote add origin https://ghp_xxxxxxxxxxxxxxxxxxx@github.com/devpipeline1/CICD.git
