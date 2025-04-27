@@ -5,6 +5,8 @@ Refer "https://kubernetes.github.io/ingress-nginx/deploy/#aws" to download deplo
 run below command on kubernetes cluster
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/aws/deploy.yaml
 
+refer page "https://kubernetes.io/docs/concepts/services-networking/ingress/" for ingress.yaml
+
 [ec2-user@ip-172-31-1-66 helm]$ cd /myproject/kube8/
 [ec2-user@ip-172-31-1-66 kube8]$ ls
 deploy.yaml  ingress.yaml  service.yaml
