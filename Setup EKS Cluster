@@ -53,6 +53,14 @@ unzip awscliv2.zip
 sudo ./aws/install
 
 
+##Login aws frol cli##
+[root@ip-172-31-80-84 ~]# aws configure
+AWS Access Key ID [None]: AKBKICKUDKIUKI
+AWS Secret Access Key [None]: xyzxyzxyzxyz
+Default region name [None]: us-east-1
+Default output format [None]:
+
+
 
 ## Install a EKS cluster with EKSCTL
 
