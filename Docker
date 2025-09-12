@@ -113,8 +113,9 @@ REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
 devpipeline/nginx   v1        d89ddd4e533b   8 seconds ago   192MB
 nginx               latest    4e1b6bae1e48   7 days ago      192MB
 [ec2-user@ip-172-31-1-66 ~]$ 
-
+==============================================
 **Push updated image to Docker hub registry**
+==============================================
 [ec2-user@ip-172-31-1-66 ~]$ docker login
 Authenticating with existing credentials...
 WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
@@ -134,8 +135,9 @@ bd903131a05e: Mounted from library/nginx
 ea680fbff095: Mounted from devpipeline/httpd 
 v1: digest: sha256:6febb021e6c65a37d421029a102153964d1a0df68feb1df5aed91ad8181ca3f3 size: 1986
 [ec2-user@ip-172-31-1-66 ~]$ 
-
+============================================
 **Build Docker image using Docker file**
+============================================
 [ec2-user@ip-172-31-1-66 ~]$ ls
 my-first-folder
 [ec2-user@ip-172-31-1-66 ~]$ cd my-first-folder/
@@ -169,8 +171,9 @@ COPY index.html /usr/share/nginx/html/index.html
  => => exporting layers                                                                                                                                  0.0s
  => => writing image sha256:cac21fda357c469629a8b0c1a08ceafa321643a54a5a740522b97329500412fe                                                             0.0s
  => => naming to docker.io/devpipeline/nginx:v2 0.0s
-
+=================================
 **Push image to Docker registry**
+=================================
 [ec2-user@ip-172-31-1-66 my-first-folder]$ docker images
 REPOSITORY          TAG       IMAGE ID       CREATED          SIZE
 devpipeline/nginx   v2        cac21fda357c   10 seconds ago   192MB
@@ -189,8 +192,9 @@ bd903131a05e: Layer already exists
 ea680fbff095: Layer already exists 
 v2: digest: sha256:85ac052e8850eabca1d0183a395758cde8e564aab7b2fb92ec3444110734d12a size: 1985
 [ec2-user@ip-172-31-1-66 my-first-folder]$ 
-
+========================================================
 **Create container from update images and test output**
+========================================================
 [ec2-user@ip-172-31-1-66 my-first-folder]$ 
 [ec2-user@ip-172-31-1-66 my-first-folder]$ docker run -d --name myapp -p 8081:80 devpipeline/nginx:v2
 8cc3e464c6bdca3d605f1dd8f5a5360e45b7859bfe82d86f2fac8a22dd617433
