@@ -57,9 +57,9 @@ Commercial support is available at
 </body>
 </html>
 [ec2-user@ip-172-31-1-66 ~]$
-
+=============================================================
 **Login Docker container and change the code in index.html**
-
+=============================================================
 [ec2-user@ip-172-31-1-66 ~]$ docker ps -a
 CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                   NAMES
 04d9ea9eb510   nginx     "/docker-entrypoint.…"   7 minutes ago   Up 7 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp   apps
@@ -99,8 +99,9 @@ root@04d9ea9eb510:/usr/share/nginx/html# cat index.html
 <html><body><h1>It should work with Docker container!</h1></body></html>
 root@04d9ea9eb510:/usr/share/nginx/html# exit
 exit
-
+==========================================
 ** Create image from running container **
+==========================================
 [ec2-user@ip-172-31-1-66 ~]$ docker ps -a
 CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                                   NAMES
 04d9ea9eb510   nginx     "/docker-entrypoint.…"   18 minutes ago   Up 18 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp   apps
