@@ -1,0 +1,68 @@
+Prerequisite
+
+Install docker and git
+yum install git docker -y
+docker info
+systemctl start docker
+systemctl enable docker
+
+
+1.Download docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.39.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+- -L: Follows redirects.
+- $(uname -s): system name (e.g., Linux).
+- $(uname -m): machine architecture (e.g., x86_64).
+
+2. Make It Executable
+sudo chmod +x /usr/local/bin/docker-compose
+
+3. Verify Installation
+docker-compose --version
+
+(Optional)
+export /usr/local/bin
+export PATH=$PATH:/usr/local/bin
+echo "export PATH=$PATH:/usr/local/bin" >> ~/.bashrc
+source ~/.base
+
+4.clone easytrade git repo (run this command from /myproject)
+ git clone https://github.com/Dynatrace/easytrade.git
+
+5.go to easytrade directory
+cd /myproject/easytrade
+
+6.Run compose.yaml
+docker-compose -f compose.yaml up -d
+
+access application via browser <publicip:80>
+
+========================
+Update frontend web page
+========================
+
+cd /myproject/easytrade/src/frontend
+
+vi /myproject/easytrade/src/frontend/index.html
+
+2.Insert your Datadog RUM script inside the <head> tag of src/frontend/index.html.
+
+3. Build a Custom Frontend Image From the src/frontend directory, run:
+docker build -t easytrade-frontend:v1 .
+
+4. Find the frontend service in compose.yaml and change the image line:
+frontend:
+  <<: *default-service
+  image: easytrade-frontend:vi
+  depends_on:
+    - broker-service
+    - loginservice
+    - pricing-service
+    - accountservice
+    - credit-card-order-service
+'
+5. stop docker containers
+docker-compose down
+
+6.start docker containers with updated build
+ docker-compose up --build -d
