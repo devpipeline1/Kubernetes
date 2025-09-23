@@ -3,7 +3,7 @@
 Refer "https://kubernetes.github.io/ingress-nginx/deploy/#aws" to download deployment file to create ingress controller
 
 run below command on kubernetes cluster
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/aws/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.2/deploy/static/provider/aws/deploy.yaml
 
 refer page "https://kubernetes.io/docs/concepts/services-networking/ingress/" for ingress.yaml
 
