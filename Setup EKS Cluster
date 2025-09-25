@@ -112,3 +112,4 @@ eksctl delete cluster --name my-cluster1 --region ap-south-1
 
 
 aws eks update-kubeconfig --region ap-south-1 --name mydemo
+eksctl create cluster --name auto-mode-cluster --region us-west-2 --auto-mode
