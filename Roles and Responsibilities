@@ -1,0 +1,41 @@
+AWS, Containers, and Kubernetes Basics
+---------------------------------------
+Role: Cloud Infrastructure Engineer / DevOps Engineer (Entry-Level)
+Responsibilities:
+- Provision AWS resources including IAM users and EC2 instances.
+- Securely access cloud servers using SSH tools like PuTTY.
+- Understand and explain containerization concepts and lifecycle.
+- Install and configure Docker on cloud instances.
+- Build, run, and manage container images using Docker.
+- Push custom images to Docker Hub for reuse and sharing.
+- Understand microservices architecture and contrast it with monolithic systems.
+- Use Docker Compose to deploy multi-container applications.
+- Set up Kubernetes clusters on AWS using EKS.
+- Install and configure CLI tools (eksctl, kubectl, AWS CLI).
+- Create and manage Kubernetes pods using YAML manifests.
+
+
+ Kubernetes Objects and Configuration Management
+--------------------------------------------------
+Role: Kubernetes Administrator / Platform Engineer
+Responsibilities:
+- Manage core Kubernetes objects: Pods, ReplicaSets, Deployments, Namespaces.
+- Configure service networking: ClusterIP, NodePort, LoadBalancer, and Ingress.
+- Implement configuration management using ConfigMaps and Secrets.
+- Set up persistent storage using PVs, PVCs, and StorageClasses.
+- Define resource limits and requests for optimized cluster performance.
+- Implement health checks using liveness and readiness probes.
+- Perform rolling updates and rollbacks for application deployments.
+- Enforce security policies using RBAC and PodSecurityPolicies
+
+
+Automation and Monitoring
+-------------------------
+Role: DevOps Engineer / Site Reliability Engineer (SRE)
+Responsibilities:
+- Configure autoscaling for Kubernetes worker nodes in EKS.
+- Use Helm charts to deploy and manage complex applications.
+- Design and implement CI/CD pipelines integrated with Kubernetes.
+- Automate deployments using GitHub Actions and ArgoCD.
+- Monitor Kubernetes clusters using Datadog observability tools.
+- Ensure high availability and performance of containerized applications
