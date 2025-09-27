@@ -10,3 +10,8 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}
 Get the Loadbalancer service IP
 
 kubectl get svc argocd-server -n argocd
+kubectl get secret -n argocd
+kubectl edit secret argocd-initial-admin-secret -n argocd 
+
+echo password | base64 -d
+copy password (except %)
