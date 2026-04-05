@@ -1,0 +1,32 @@
+🛠 Prerequisites
+- Docker installed and running
+- kubectl installed and configured
+
+Recommended resource allocation for running a Vind cluster (1 master + 2 workers) on Docker Desktop (Windows):
+- Master Node (Control Plane) → 2 vCPUs, 4 GB RAM
+- Each Worker Node → 2 vCPUs, 3–4 GB RAM
+- Cluster Total (1 master + 2 workers) → 6 vCPUs, 8–10 GB RAM
+
+
+👉Install kubectl (if not already):
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/windows/amd64/kubectl.exe"
+mv kubectl.exe /c/Users/myuser/bin/
+export PATH=$PATH:/c/Users/myuser/bin
+
+👉Install vCluster CLI:
+curl -s https://get.vcluster.com | bash
+
+👉Create Vind cluster:
+vcluster create vind-cluster --driver=docker --nodes=3
+
+ You’ll get 3 nodes in total:
+- 1 control plane (master)
+- 2 worker nodes
+
+👉Connect to cluster:
+vcluster connect vind-cluster
+
+👉Verify nodes:
+kubectl get nodes
+
