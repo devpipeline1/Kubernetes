@@ -114,3 +114,40 @@ nohup eksctl create cluster --name my-cluster7 --region ap-south-1 > cluster.log
 aws eks update-kubeconfig --region ap-south-1 --name mydemo
 eksctl create cluster --name auto-mode-cluster --region us-west-2 --auto-mode
 eks-node-viewer --resources=cpu,memory --extra-labels=topology.kubernetes.io/zone --node-sort=cpu=dsc
+
+
+FOR windows git bash
+1. Install kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/windows/amd64/kubectl.exe"
+
+Then move it into your PATH:
+mkdir -p ~/bin
+mv ./kubectl.exe ~/bin/kubectl.exe
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+source ~/.bashrc
+
+kubectl version --client
+
+2. Install eksctl
+ Download the Windows binary directly
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_Windows_amd64.zip"
+
+Unzip it
+unzip eksctl_Windows_amd64.zip -d /tmp
+
+Move it into your PATH
+mkdir -p ~/bin
+mv /tmp/eksctl.exe ~/bin/eksctl.exe
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+source ~/.bashrc
+
+Verify the installation
+eksctl version
+
+
+3. Install AWS CLI v2
+Download the Windows installer
+curl "https://awscli.amazonaws.com/AWSCLIV2.msi" -o "AWSCLIV2.msi"
+
+Run the installer
+msiexec /i AWSCLIV2.msi
