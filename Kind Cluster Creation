@@ -1,5 +1,5 @@
-First install Docker
-
+Install Docker
+==============
 yum install docker
        or 
 1. Remove old versions of docker (if any)
@@ -24,7 +24,7 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 
 Install Kind
-
+============
 Refer "https://kind.sigs.k8s.io/docs/user/quick-start/"
 
 # For AMD64 / x86_64
@@ -64,8 +64,5 @@ kubectl cluster-info --context kind-my-2
 or
 kubectl cluster-info
 
-
-
-
-
+To delete cluster
 kind delete cluster --name <clustername>
