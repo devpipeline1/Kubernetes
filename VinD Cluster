@@ -36,3 +36,5 @@ vcluster connect vind-cluster
 👉Verify nodes:
 kubectl get nodes
 
+👉To access UI
+vcluster platform start
