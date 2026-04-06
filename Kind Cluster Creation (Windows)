@@ -6,12 +6,11 @@ download and run "Docker Desktop Installer"
 
 Install Kubectl
 ===============
-Refer web page "https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/"
+👉Install kubectl (if not already):
 
-                 or run below commands directly
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/windows/amd64/kubectl.exe"
+mv kubectl.exe /c/Users/myuser/bin/
+export PATH=$PATH:/c/Users/myuser/bin
 
 kubectl version --client
 
