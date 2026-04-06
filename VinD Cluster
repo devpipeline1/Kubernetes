@@ -14,8 +14,15 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 mv kubectl.exe /c/Users/myuser/bin/
 export PATH=$PATH:/c/Users/myuser/bin
 
-👉Install vCluster CLI:
-curl -s https://get.vcluster.com | bash
+👉Download vCluster CLI:
+curl -L -o vcluster.exe https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-windows-amd64.exe
+
+👉Move Binary to PATH
+mv vcluster.exe /c/Users/Windows/bin/
+export PATH=$PATH:/c/Users/Windows/bin
+
+👉Reload your shell
+source ~/.bashrc
 
 👉Check version
 vcluster --version
@@ -24,17 +31,30 @@ vcluster --version
 vcluster use driver docker
 
 👉Create Vind cluster:
-vcluster create vind-cluster --driver=docker --nodes=3
+vcluster create vind-cluster 
 
- You’ll get 3 nodes in total:
-- 1 control plane (master)
-- 2 worker nodes
+
+👉Create multiple nodes using kind
+Create a Kind config file
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+  - role: worker
+
+👉Create the vCluster with Kind
+
+vcluster create mycluster --driver=kind --config kind-config.yaml
 
 👉Connect to cluster:
-vcluster connect vind-cluster
+vcluster connect mycluster
 
 👉Verify nodes:
 kubectl get nodes
 
+vcluster list
 👉To access UI
 vcluster platform start
