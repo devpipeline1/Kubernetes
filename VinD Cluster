@@ -17,6 +17,12 @@ export PATH=$PATH:/c/Users/myuser/bin
 👉Install vCluster CLI:
 curl -s https://get.vcluster.com | bash
 
+👉Check version
+vcluster --version
+
+👉Set driver as docker
+vcluster use driver docker
+
 👉Create Vind cluster:
 vcluster create vind-cluster --driver=docker --nodes=3
 
