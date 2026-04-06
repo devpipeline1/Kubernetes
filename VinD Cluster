@@ -2,7 +2,7 @@
 - Docker installed and running
 - kubectl installed and configured
 
-Recommended resource allocation for running a Vind cluster (1 master + 2 workers) on Docker Desktop (Windows):
+👉Recommended resource allocation for running a Vind cluster (1 master + 2 workers) on Docker Desktop (Windows):
 - Master Node (Control Plane) → 2 vCPUs, 4 GB RAM
 - Each Worker Node → 2 vCPUs, 3–4 GB RAM
 - Cluster Total (1 master + 2 workers) → 6 vCPUs, 8–10 GB RAM
