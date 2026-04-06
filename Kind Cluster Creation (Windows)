@@ -1,0 +1,61 @@
+Install Docker Desktop
+======================
+Refer "https://docs.docker.com/desktop/setup/install/windows-install/"
+
+download and run "Docker Desktop Installer" 
+
+Install Kubectl
+===============
+Refer web page "https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/"
+
+                 or run below commands directly
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+kubectl version --client
+
+Install Kind
+============
+Refer "https://kind.sigs.k8s.io/docs/user/quick-start/"
+
+# For AMD64 / x86_64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-amd64
+# For ARM64
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+
+Create cluster with single node
+kind create cluster --name my-2
+
+check cluster list
+kind get clusters
+
+check docker running container
+docker ps
+
+To create multi node cluster
+vi multicluster.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+
+kind create cluster --name my-2 --config=multicluster.yaml
+To check currently you are interacting with which cluster(when you have multi node cluster)
+kubectl config current-context
+
+if you want to jump from one cluster to another
+kubectl config get-contexts
+kubectl config use-context <cluster-name>
+
+get cluster info
+kubectl cluster-info --context kind-<cluster-name>
+or
+kubectl cluster-info
+
+To delete cluster
+kind delete cluster --name <clustername>
