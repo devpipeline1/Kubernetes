@@ -146,8 +146,21 @@ eksctl version
 
 
 3. Install AWS CLI v2
-Download the Windows installer
-curl "https://awscli.amazonaws.com/AWSCLIV2.msi" -o "AWSCLIV2.msi"
+Open powershell and run below command
+winget install Amazon.AWSCLI 
 
-Run the installer
-msiexec /i AWSCLIV2.msi
+$ aws configure
+
+Tip: You can deliver temporary credentials to the AWS CLI using your AWS Console session by running the command 'aws login'.
+
+AWS Access Key ID [None]:
+AWS Secret Access Key [None]:
+Default region name [None]: ap-south-1
+Default output format [None]:
+
+
+Create below kubeconfig file
+$ aws eks update-kubeconfig --region ap-south-1 --name my-cluster11
+Added new context arn:aws:eks:ap-south-1:045667250694:cluster/my-cluster11 to C:\Users\Windows\.kube\config
+
+
