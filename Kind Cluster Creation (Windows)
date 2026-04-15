@@ -48,6 +48,7 @@ kubectl config current-context
 if you want to jump from one cluster to another
 kubectl config get-contexts
 kubectl config use-context <cluster-name>
+kubectl config use-context kind-mycluster-app
 
 get cluster info
 kubectl cluster-info --context kind-<cluster-name>
