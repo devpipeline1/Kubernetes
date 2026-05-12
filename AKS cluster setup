@@ -19,3 +19,9 @@ az provider register --namespace Microsoft.OperationalInsights
 
 Verify the registration
 az provider show --namespace Microsoft.OperationalInsights --query "registrationState"
+
+az aks create   --resource-group MyResourceGroup   --name MyAKSCluster   --node-count 1   --enable-addons monitoring   --generate-ssh-keys
+
+az aks get-credentials --resource-group MyResourceGroup --name MyAKSCluster
+
+ kubectl get nodes
