@@ -1,0 +1,21 @@
+Install Azure CLI via git bash
+winget install --exact --id Microsoft.AzureCLI
+
+az login
+
+add path for git bash
+echo 'export PATH=$PATH:/c/Program Files/Microsoft SDKs/Azure/CLI2/wbin' >> ~/.bashrc
+source ~/.bashrc
+
+az --version
+
+az login
+
+az account show
+ az group create --name MyResourceGroup --location southindia
+
+Register the Resource Provider
+az provider register --namespace Microsoft.OperationalInsights
+
+Verify the registration
+az provider show --namespace Microsoft.OperationalInsights --query "registrationState"
