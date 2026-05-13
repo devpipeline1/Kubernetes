@@ -36,3 +36,16 @@ az aks create \
 az aks get-credentials --resource-group MyResourceGroup --name MyAKSCluster
 
  kubectl get nodes
+
+kubectl annotate namespace easytrade dynatrace.com/inject=true
+
+
+Standard_B2ms → 2 vCPUs, 8 GB RAM (burstable, economical)
+
+Standard_D2_v3 → 2 vCPUs, 8 GB RAM (general purpose, Intel-based)
+
+Standard_D2_v4 → 2 vCPUs, 8 GB RAM (general purpose, newer Intel generation)
+
+Standard_D2_v5 → 2 vCPUs, 8 GB RAM (general purpose, latest Intel generation)
+
+Standard_D2s_v3/v4/v5/v6 → 2 vCPUs, 8 GB RAM (same as above, but with Premium SSD support)
