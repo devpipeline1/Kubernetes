@@ -1,8 +1,6 @@
 Install Azure CLI via git bash
 winget install --exact --id Microsoft.AzureCLI
 
-az login
-
 add path for git bash
 echo 'export PATH=$PATH:/c/Program Files/Microsoft SDKs/Azure/CLI2/wbin' >> ~/.bashrc
 source ~/.bashrc
@@ -21,6 +19,19 @@ Verify the registration
 az provider show --namespace Microsoft.OperationalInsights --query "registrationState"
 
 az aks create   --resource-group MyResourceGroup   --name MyAKSCluster   --node-count 1   --enable-addons monitoring   --generate-ssh-keys
+
+az aks create --resource-group MyResourceGroup --name MyAKSCluster --node-count 1 --node-vm-size Standard_B2ms --generate-ssh-keys
+
+Standard_D2a_v4
+
+
+az aks create \
+  --resource-group MyResourceGroup \
+  --name MyAKSCluster \
+  --node-count 1 \
+  --node-vm-size Standard_B2s \
+  --generate-ssh-keys
+
 
 az aks get-credentials --resource-group MyResourceGroup --name MyAKSCluster
 
