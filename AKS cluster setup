@@ -20,9 +20,10 @@ az provider show --namespace Microsoft.OperationalInsights --query "registration
 
 az aks create   --resource-group MyResourceGroup   --name MyAKSCluster   --node-count 1   --enable-addons monitoring   --generate-ssh-keys
 
-az aks create --resource-group MyResourceGroup --name MyAKSCluster --node-count 1 --node-vm-size Standard_B2ms --generate-ssh-keys
+az aks create --resource-group MyResourceGroup --name MyAKSCluster1 --node-count 1 --node-vm-size Standard_E4s_v5   --enable-cluster-autoscaler --min-count 1 --max-count 2 --generate-ssh-keys
 
-Standard_D2a_v4
+
+Standard_D2_v3
 
 
 az aks create \
