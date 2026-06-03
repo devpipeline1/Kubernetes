@@ -1,5 +1,5 @@
 # CICD using GitHub actions
-
+#Sets the name of the workflow. It will show up in GitHub Actions UI as CI.
 name: CI
 
 # Exclude the workflow to run on changes to the helm chart
