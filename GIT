@@ -89,7 +89,40 @@ git status
 git add README.md
 git commit -m "first commit"
 git branch -M main
-git config --global user.name "devpipeline1"
-git config --global user.email "devpipelinepulse@gmail.com"
-git remote add origin https://ghp_xxxxxxxxxxxxxxxxxxx@github.com/devpipeline1/CICD.git
+git remote add origin https://github.com/devpipeline1/helm-test.git
+git remote set-url origin https://github.com/devpipeline1/helm-test.git
+git push -u origin main
+
+
+Create a Personal Access Token (PAT)
+Log in to GitHub.
+
+Click your profile picture → Settings.
+
+Scroll down → Developer settings.
+
+Click Personal access tokens → Tokens (classic).
+
+Click Generate new token.
+
+Give it a name (e.g., helm-test-token).
+
+Set expiration (e.g., 90 days).
+
+Select scopes:
+
+✅ repo (full control of private/public repos)
+
+✅ workflow (if you want to trigger GitHub Actions)
+
+Click Generate token.
+
+Copy the token immediately (you wont see it again )
+
+Use PAT in Git Remote
+
+git remote set-url origin https://<USERNAME>:<TOKEN>@github.com/devpipeline1/helm-test.git
+
+git remote set-url origin https://devpipeline1:ghp_xxxxxxxx@github.com/devpipeline1/helm-test.git
+
 git push -u origin main
