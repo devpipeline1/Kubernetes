@@ -1,1 +1,44 @@
+name: "Deploy EKS Infrastructure"
 
+on:
+  push:
+    branches:
+      - main # Triggers the pipeline when code is pushed to the main branch
+
+jobs:
+  terraform:
+    name: "Terraform EKS Deployment"
+    runs-on: ubuntu-latest
+
+    # Set environment variables for AWS authentication using your GitHub Secrets
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: "us-east-1" # Must match the region in your main.tf
+
+    steps:
+      # Step 1: Clone the repository code onto the GitHub runner
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install the specified version of Terraform on the runner
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0" # Keeps versions consistent
+
+      # Step 3: Initialize Terraform (downloads modules and providers)
+      - name: Terraform Init
+        run: terraform init
+
+      # Step 4: Validate the configuration syntax
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Step 5: Generate an execution plan (shows what will be built)
+      - name: Terraform Plan
+        run: terraform plan -input=false
+
+      # Step 6: Deploy the infrastructure automatically (-auto-approve skips the manual 'yes' prompt)
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false
