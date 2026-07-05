@@ -1,0 +1,30 @@
+Here’s a clean step‑by‑step way to install **Terraform** using PowerShell on Windows:
+
+---
+
+### 🛠 Steps to Install Terraform via PowerShell
+
+1. **Download Terraform Binary**
+   ```powershell
+   Invoke-WebRequest -Uri https://releases.hashicorp.com/terraform/1.9.0/terraform_1.9.0_windows_amd64.zip -OutFile terraform.zip
+   ```
+   *(Replace `1.9.0` with the latest version if needed.)*
+
+2. **Extract the ZIP File**
+   ```powershell
+   Expand-Archive -Path terraform.zip -DestinationPath C:\terraform
+   ```
+
+3. **Add Terraform to System PATH**
+   ```powershell
+   $env:Path += ";C:\terraform"
+   ```
+   To make this permanent:
+   ```powershell
+   setx PATH "$env:Path;C:\terraform"
+   ```
+
+4. **Verify Installation**
+   ```powershell
+   terraform -version
+   ```
