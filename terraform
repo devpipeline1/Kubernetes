@@ -28,3 +28,7 @@ Here’s a clean step‑by‑step way to install **Terraform** using PowerShell 
    ```powershell
    terraform -version
    ```
+
+vi ~/.bashrc
+export PATH=$PATH:/c/terraform
+
