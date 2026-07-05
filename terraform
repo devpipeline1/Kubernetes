@@ -32,3 +32,121 @@ Here’s a clean step‑by‑step way to install **Terraform** using PowerShell 
 vi ~/.bashrc
 export PATH=$PATH:/c/terraform
 
+
+
+===========================================================
+Terraform main.tf
+============================================================
+# 1. Specify the AWS Provider
+provider "aws" {
+  region = "ap-south-1" # Change to your preferred region
+}
+
+# 2. Create the VPC using the official AWS Module
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = "eks-management-vpc"
+  cidr = "10.0.0.0/16"
+
+  # EKS requires subnets across at least two Availability Zones
+  azs             = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  # Enable NAT Gateway so nodes in private subnets can reach the internet
+  enable_nat_gateway = true
+  single_nat_gateway = true # Set to false for production high availability
+
+  # Mandatory tags for EKS integration
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = "1"
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = "1"
+  }
+}
+
+# 3. Create a Security Group for the EKS Cluster
+resource "aws_security_group" "eks_cluster_sg" {
+  name        = "eks-cluster-sg"
+  description = "Cluster communication with worker nodes"
+  vpc_id      = module.vpc.vpc_id
+
+  # Allow outbound traffic to everywhere
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "eks-cluster-sg"
+  }
+}
+
+# 4. Create the EKS Cluster using the official AWS Module
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 20.0"
+
+  cluster_name    = "my-eks-cluster"
+  cluster_version = "1.31" # Deploys a stable Kubernetes version
+
+  # Make the cluster API accessible via public internet, but place nodes in private subnets
+  cluster_endpoint_public_access = true
+
+  vpc_id                   = module.vpc.vpc_id
+  subnet_ids               = module.vpc.private_subnets
+  control_plane_subnet_ids = module.vpc.private_subnets
+
+  # Extend the module's default security group with our custom one
+  cluster_additional_security_group_ids = [aws_security_group.eks_cluster_sg.id]
+
+  # Configure Managed Node Groups (the actual worker instances)
+  eks_managed_node_groups = {
+    general = {
+      starting_pps = "ami-recommended"
+      instance_types = ["t3.medium"] # Standard budget-friendly testing size
+
+      min_size     = 1
+      max_size     = 3
+      desired_size = 2
+    }
+  }
+
+  # Enable cluster creator admin permissions (automatically maps your AWS identity as cluster admin)
+  enable_cluster_creator_admin_permissions = true
+}
+
+========================================================
+You can define values in values.tfvars
+========================================================
+region = "ap-south-1"
+azs    = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
+
+# Provider
+provider "aws" {
+  region = var.region
+}
+
+  azs             = var.azs
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+================================
+Define variables in variables.tf
+================================
+variable "region" {
+  type        = string
+  description = "AWS region to deploy resources"
+}
+
+variable "azs" {
+  type        = list(string)
+  description = "Availability Zones to use"
+}
+
