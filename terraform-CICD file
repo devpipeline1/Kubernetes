@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main # Triggers the pipeline when code is pushed to the main branch
+    paths-ignore:
+      - '.terraform*'
+      - 'README.md'
 
 jobs:
   terraform:
@@ -14,7 +17,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: "us-east-1" # Must match the region in your main.tf
+      AWS_DEFAULT_REGION: "ap-south-1" # Must match the region in your main.tf
 
     steps:
       # Step 1: Clone the repository code onto the GitHub runner
@@ -37,8 +40,8 @@ jobs:
 
       # Step 5: Generate an execution plan (shows what will be built)
       - name: Terraform Plan
-        run: terraform plan -input=false
+        run: terraform plan -input=false -var-file=values.tfvars
 
       # Step 6: Deploy the infrastructure automatically (-auto-approve skips the manual 'yes' prompt)
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false
+      - name: Terraform destroy
+        run: terraform destroy -auto-approve -input=false -var-file=values.tfvars
